@@ -1,0 +1,44 @@
+<div id="menu">
+	<ul>
+		<li><%= time_sheet_link "Previous TimeSheet", @user, session[ :start_date ], session[ :end_date ], -7 %></li>
+		<li><%= time_sheet_link "Next TimeSheet", @user, session[ :start_date ], session[ :end_date ], +7 %></li>
+	</ul>
+</div>
+<div style="margin: 0 auto;text-align: center;">
+	<h3><%= session[ :start_date ].strftime( "%B %d %Y" ) %> to <%= session[ :end_date ].strftime( "%B %d %Y" ) %></h4>
+</div>
+<% form_for :user, @user, :url => { :action => "update_timesheet" } do | user_form | %>
+
+	<%= user_form.error_messages :header_message => "Invalid entries!",
+	  :message => "You'll need to fix the following issues:",
+	  :header_tag => :h3 %>
+
+	<% if flash[ :notice ] != nil %>
+		<div class="notices">
+			<%= flash[ :notice ] %>
+		</div>
+	<% end %>
+	
+	<table id="entries" style="margin: 0 auto;">
+		<tr>
+			<th>Date</th>
+			<th>Hours</th>
+			<th>Project</th>
+			<th>Activity</th>
+			<th>Description</th>
+			<th>Delete</th>
+		</tr>
+		
+		<% @user.entries.each do | entry | %>
+			<% if entry.date >= session[ :start_date ] && entry.date <= session[ :end_date ] %>
+				<%= render :partial => 'entry', :locals => { :new_index => nil, :f => user_form, :start_date => session[ :start_date ], :end_date => session[ :end_date ] }, :object => entry %>
+			<% end %>
+		<% end %>		
+	</table>
+	
+	<div id="timesheet_controls">
+		<%= user_form.submit "Save" %>
+		<%= add_entry_link "Add Entry",  user_form, session[ :start_date ], session[ :end_date ] %>
+	</div>
+	
+<% end %>

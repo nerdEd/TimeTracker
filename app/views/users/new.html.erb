@@ -1,0 +1,21 @@
+<div id="menu">
+	<ul>
+		<li><%= link_to 'Back', users_path %></li>
+	</ul>
+</div>
+
+<div style="margin: 0 auto;width: 300px;">
+	<h1>New user</h1>
+	
+	<% form_for(@user) do |f| %>
+	  <%= f.error_messages %>
+
+	  <p>
+	    <%= f.label :name %><br />
+	    <%= f.text_field :name %>
+	  </p>
+	  <p>
+	    <%= f.submit 'Create' %>
+	  </p>
+	<% end %>
+</div>

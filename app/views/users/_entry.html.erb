@@ -1,0 +1,31 @@
+<% f.fields_for :entries, entry, :child_index => new_index do | entry_form | %>
+	<tr>
+		<td>
+    	<%= entry_form.select :date, options_for_date_span( start_date, end_date, entry.date )%>
+		</td>
+
+		<td>
+    	<%= entry_form.text_field :hours, :class => "narrow_text_input" %>
+		</td>
+	
+		<td>
+    	<%= entry_form.text_field :project %>
+		</td>
+
+		<td>
+    	<%= entry_form.text_field :activity %>
+		</td>
+
+		<td>
+    	<%= entry_form.text_field :description %>
+		</td>
+	
+		<td style="text-align: center;">
+	    <% if entry_form.object.new_record? %>
+				<a href="" onclick="this.up(1).remove();return false;">undo</a>
+	    <% else %>			
+	      <%= entry_form.check_box '_delete' %>
+			<% end %>			
+		</td>
+  </tr>
+<% end %>
